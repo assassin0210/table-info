@@ -14,7 +14,7 @@ export const Home = () => {
 
     return (
         <GameList>
-            <h2>upcoming games </h2>
+            <h2>upcoming games1 </h2>
             <Games>
                 {upcoming.map((game) => (
                     <Game key={game.id} game={game}/>
