@@ -1,38 +1,55 @@
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import styled from "styled-components";
+import { useHistory, useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { smallImage } from "../util";
 
 export const GameDetail = () => {
-  const { screenshots, game } = useSelector((state) => state.detailReducer);
+  const { pathname } = useLocation();
+  const history = useHistory();
+  const exitDetailHandler = (e) => {
+    const element = e.target;
+    if (element.classList.contains("shadow")) {
+      document.body.style.overflow = "auto";
+      history.push("/");
+    }
+  };
+  useEffect(() => {}, [pathname]);
+  const { screenshots, game, isLoading } = useSelector((state) => state.detailReducer);
 
   return (
-    <CardShadow>
-      <Detail>
-        <Stats>
-          <div className="rating">
-            <h3>{game.name}</h3>
-            <p>Rating: {game.rating}</p>
-          </div>
-          <Info>
-            <h3>Platforms</h3>
-            <Platforms>
-              {game.platforms.map((i) => (
-                <h3 key={i.platform.id}>{i.platform.name}</h3>
+    <>
+      {!isLoading && (
+        <CardShadow className="shadow" onClick={exitDetailHandler} $isLoading={isLoading}>
+          <Detail>
+            <Stats>
+              <div className="rating">
+                <h3>{game.name}</h3>
+                <p>Rating: {game.rating}</p>
+              </div>
+              <Info>
+                <h3>Platforms</h3>
+                <Platforms>
+                  {game.platforms.map((i) => (
+                    <h3 key={i.platform.id}>{i.platform.name}</h3>
+                  ))}
+                </Platforms>
+              </Info>
+            </Stats>
+            <Media>
+              <img src={smallImage(game.background_image, 1280)} alt="image" />
+            </Media>
+            <Description dangerouslySetInnerHTML={{ __html: game.description }} />
+            <div className="gallery">
+              {screenshots.map((s) => (
+                <img key={s.id} src={smallImage(s.image, 1280)} alt="image" />
               ))}
-            </Platforms>
-          </Info>
-        </Stats>
-        <Media>
-          <img src={game.background_image} alt="image" />
-        </Media>
-        <Description dangerouslySetInnerHTML={{ __html: game.description }} />
-        <div className="gallery">
-          {screenshots.map((s) => (
-            <img key={s.id} src={s.image} alt="image" />
-          ))}
-        </div>
-      </Detail>
-    </CardShadow>
+            </div>
+          </Detail>
+        </CardShadow>
+      )}
+    </>
   );
 };
 

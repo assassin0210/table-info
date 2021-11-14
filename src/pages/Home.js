@@ -4,10 +4,8 @@ import { loadGames } from "../actions/gamesAction";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { Game } from "../components/Game";
-import { useLocation } from "react-router-dom";
 
 export const Home = () => {
-  const location = useLocation();
   const { popular, newGames, upcoming } = useSelector((state) => state.gameReducer);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -16,8 +14,6 @@ export const Home = () => {
 
   return (
     <GameList>
-      {/*<GameDetail />*/}
-
       <h2>Upcoming Games</h2>
       <Games>
         {upcoming.map((game) => (
